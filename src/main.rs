@@ -4,10 +4,7 @@ use std::{
     fs::{self, read_to_string},
 };
 
-use axum::{
-    routing::{get, post},
-    Json, Router,
-};
+use axum::{routing::post, Json, Router};
 use markov::MarkovChain;
 
 use once_cell::sync::Lazy;
@@ -36,8 +33,7 @@ async fn main() {
         println!("Generator is trained");
     }
 
-    let app = Router::new()
-        .route("/", post(generate));
+    let app = Router::new().route("/", post(generate));
 
     // Listens requests from port 3000
     let listener = tokio::net::TcpListener::bind(&"0.0.0.0:3000")
