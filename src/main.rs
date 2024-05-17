@@ -30,10 +30,10 @@ async fn main() {
     // Training Markov Chain before starting the server. The server won't start until training is finished.
     // If this step were to be omited, the training won't begin until a POST request to `/` is sent, due to how `Lazy` is evaluated.
     {
-        println!("Training");
+        println!("Training the Generator");
         // Forces `Lazy` to be evaluated.
         Lazy::force(&GENERATOR);
-        println!("Trained");
+        println!("Generator is trained");
     }
 
     let app = Router::new()
@@ -45,6 +45,7 @@ async fn main() {
         .await
         .unwrap();
 
+    println!("Listening at port: 3000");
     axum::serve(listener, app).await.unwrap();
 }
 
