@@ -37,7 +37,6 @@ async fn main() {
     }
 
     let app = Router::new()
-        .route("/hello", get(|| async { "Hello, World" }))
         .route("/", post(generate));
 
     // Listens requests from port 3000
