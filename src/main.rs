@@ -15,7 +15,7 @@ async fn main() {
     println!("Trained");
 
     let app = Router::new()
-        .route("/hello", get(|| {"Hello, World"}));
+        .route("/hello", get(|| async {"Hello, World"}));
 
     let listener = tokio::net::TcpListener::bind(&"0.0.0.0:3000")
         .await
