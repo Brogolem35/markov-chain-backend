@@ -2,6 +2,7 @@ mod markov;
 use std::{
     env,
     fs::{self, read_to_string},
+    net::SocketAddr,
 };
 
 use axum::{routing::post, Json, Router};
@@ -36,11 +37,10 @@ async fn main() {
     let app = Router::new().route("/", post(generate));
 
     // Listens requests from port 3000
-    let listener = tokio::net::TcpListener::bind(&"0.0.0.0:3000")
-        .await
-        .unwrap();
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
 
-    println!("Listening at port: 3000");
+    println!("Listening at port: {}", addr.port());
     axum::serve(listener, app).await.unwrap();
 }
 
