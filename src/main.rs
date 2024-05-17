@@ -1,10 +1,17 @@
 mod markov;
 use std::{env, fs::{self, read_to_string}};
 
-use axum::{routing::{get, post}, Router};
+use axum::{routing::{get, post}, Json, Router};
 use markov::MarkovChain;
 
 use once_cell::sync::Lazy;
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+struct GenerateBody {
+    start: String,
+    len: u8,
+}
 
 static GENERATOR: Lazy<MarkovChain> = Lazy::new(|| train_markov());
 
@@ -15,13 +22,18 @@ async fn main() {
     println!("Trained");
 
     let app = Router::new()
-        .route("/hello", get(|| async {"Hello, World"}));
+        .route("/hello", get(|| async {"Hello, World"}))
+        .route("/", post(generate));
 
     let listener = tokio::net::TcpListener::bind(&"0.0.0.0:3000")
         .await
         .unwrap();
 
     axum::serve(listener, app).await.unwrap();
+}
+
+async fn generate(Json(body): Json<GenerateBody>) -> String {
+    GENERATOR.generate_start(&body.start, body.len as usize)
 }
 
 fn train_markov() -> MarkovChain {
