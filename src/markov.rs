@@ -10,6 +10,7 @@ pub struct MarkovChain {
 	pub state_size: usize,
 }
 
+#[allow(dead_code)]
 impl MarkovChain {
 	pub fn new(state_size: usize) -> MarkovChain {
 		MarkovChain {
