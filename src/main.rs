@@ -1,4 +1,5 @@
 mod markov;
+mod routers;
 use std::{
     env,
     fs::{self, read_to_string},
@@ -10,15 +11,6 @@ use markov::MarkovChain;
 
 use once_cell::sync::Lazy;
 use serde::Deserialize;
-
-/// Body of the `POST /`
-#[derive(Deserialize)]
-struct GenerateBody {
-    /// Start of the text that the Markov Chain will complete
-    start: String,
-    /// Number of tokens that the response will contain
-    len: u8,
-}
 
 /// Markov Chain that will do the generation. Encapsulated in `Lazy` to allow it to be global.
 static GENERATOR: Lazy<MarkovChain> = Lazy::new(|| train_markov());
@@ -43,7 +35,7 @@ async fn main() {
         println!("Generator is trained");
     }
 
-    let app = Router::new().route("/", post(generate));
+    let app = Router::new().route("/", post(routers::generate));
 
     // Listens requests from port 3000
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
@@ -51,11 +43,6 @@ async fn main() {
 
     println!("Listening at port: {}", addr.port());
     axum::serve(listener, app).await.unwrap();
-}
-
-/// `POST /`
-async fn generate(Json(body): Json<GenerateBody>) -> String {
-    GENERATOR.generate_start(&body.start, body.len as usize)
 }
 
 /// Makes necessary preperations and trains the Markov Chain
