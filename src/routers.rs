@@ -1,9 +1,11 @@
 use axum::Json;
 use serde::Deserialize;
 
+use crate::generator::GENERATOR;
+
 /// Body of the `POST /`
 #[derive(Deserialize)]
-struct GenerateBody {
+pub struct GenerateBody {
     /// Start of the text that the Markov Chain will complete
     start: String,
     /// Number of tokens that the response will contain
