@@ -4,7 +4,7 @@ mod routers;
 
 use axum::{routing::post, Router};
 use once_cell::sync::Lazy;
-use std::net::SocketAddr;
+use std::{env, net::SocketAddr};
 
 #[tokio::main]
 async fn main() {
@@ -12,7 +12,7 @@ async fn main() {
     // It returns `Err` when `.env` is not found, but I don't always want a `.env` file to be present.
     let _ = dotenvy::dotenv();
 
-    let port: u16 = std::env::var("PORT")
+    let port: u16 = env::var("PORT")
         .expect("PORT env var")
         .parse()
         .expect("PORT env var couldn't parse to 16 bit unsigned int");
