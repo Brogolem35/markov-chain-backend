@@ -1,4 +1,7 @@
-use std::{env, fs::{self, read_to_string}};
+use std::{
+    env,
+    fs::{self, read_to_string},
+};
 
 use once_cell::sync::Lazy;
 

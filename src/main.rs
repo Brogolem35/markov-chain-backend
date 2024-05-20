@@ -1,6 +1,6 @@
+mod generator;
 mod markov;
 mod routers;
-mod generator;
 use std::{
     env,
     fs::{self, read_to_string},
@@ -12,8 +12,6 @@ use markov::MarkovChain;
 
 use once_cell::sync::Lazy;
 use serde::Deserialize;
-
-
 
 #[tokio::main]
 async fn main() {
