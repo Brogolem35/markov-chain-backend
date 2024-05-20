@@ -1,17 +1,10 @@
 mod generator;
 mod markov;
 mod routers;
-use std::{
-    env,
-    fs::{self, read_to_string},
-    net::SocketAddr,
-};
 
-use axum::{routing::post, Json, Router};
-use markov::MarkovChain;
-
+use axum::{routing::post, Router};
 use once_cell::sync::Lazy;
-use serde::Deserialize;
+use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
