@@ -5,6 +5,7 @@ mod routers;
 use axum::{routing::post, Router};
 use once_cell::sync::Lazy;
 use std::{env, net::SocketAddr};
+use tower_http::cors::CorsLayer;
 
 #[tokio::main]
 async fn main() {
@@ -26,7 +27,9 @@ async fn main() {
         println!("Generator is trained");
     }
 
-    let app = Router::new().route("/", post(routers::generate));
+    let app = Router::new()
+        .route("/", post(routers::generate))
+        .layer(CorsLayer::permissive());
 
     // Listens requests from port 3000
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
